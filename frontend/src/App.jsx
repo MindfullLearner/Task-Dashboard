@@ -7,6 +7,7 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     fetchTasks();
@@ -91,6 +92,9 @@ function App() {
       console.error('Error editing task:', err);
     }
   };
+
+  const filteredTasks =
+  filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
   
   return (
     <div className="app-container">
@@ -112,12 +116,31 @@ function App() {
         />
         <button type="submit">+ Add Task</button>
       </form>
-  
-      {tasks.length === 0 ? (
+      <div className="filter-bar">
+        <button
+          className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+          onClick={() => setFilter('all')}
+        >
+          All
+        </button>
+        <button
+          className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
+          onClick={() => setFilter('pending')}
+        >
+          Pending
+        </button>
+        <button
+          className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
+          onClick={() => setFilter('completed')}
+        >
+          Completed
+        </button>
+      </div>
+      {filteredTasks.length === 0 ? (
         <p className="empty-state">No tasks yet — add one above 👆</p>
       ) : (
         <ul className="task-list">
-          {tasks.map((task) =>
+          {filteredTasks.map((task) =>
             editingId === task._id ? (
               <li key={task._id} className="task-item editing">
                 <div className="edit-fields">

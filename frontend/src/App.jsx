@@ -13,6 +13,7 @@ function App() {
   const [editDescription, setEditDescription] = useState('');
   const [priority, setPriority] = useState('medium');
   const [dueDate, setDueDate] = useState('');
+  const [sortBy, setSortBy] = useState('none');
 
   useEffect(() => {
     fetchTasks();
@@ -96,7 +97,21 @@ function App() {
   };
 
   const filteredTasks =
-    filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
+  filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
+
+  const priorityOrder = { high: 0, medium: 1, low: 2 };
+  
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    if (sortBy === 'dueDate') {
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return new Date(a.dueDate) - new Date(b.dueDate);
+    }
+    if (sortBy === 'priority') {
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    }
+    return 0;
+  });
 
   return (
     <div className="app-container">
@@ -118,6 +133,8 @@ function App() {
         filteredTasks={filteredTasks}
         filter={filter}
         setFilter={setFilter}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
         editingId={editingId}
         editTitle={editTitle}
         setEditTitle={setEditTitle}

@@ -1,4 +1,3 @@
-// models/Task.js
 const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
@@ -14,6 +13,15 @@ const taskSchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'completed'],
     default: 'pending',
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high'],
+    default: 'medium',
+  },
+  dueDate: {
+    type: Date,
+    default: null,
   },
   createdAt: {
     type: Date,

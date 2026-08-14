@@ -147,3 +147,74 @@ h1 {
   color: #999;
   padding: 30px 0;
 }
+.task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  color: #764ba2;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.edit-btn:hover {
+  background: #f0e8f8;
+}
+
+.task-item.editing {
+  flex-direction: column;
+  align-items: stretch;
+  border-left-color: #764ba2;
+}
+
+.edit-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-fields input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.save-btn:hover {
+  background: #3d8b40;
+}
+
+.cancel-btn {
+  background: #eee;
+  color: #555;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-btn:hover {
+  background: #ddd;
+}

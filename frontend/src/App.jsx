@@ -11,6 +11,8 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  const [priority, setPriority] = useState('medium');
+  const [dueDate, setDueDate] = useState('');
 
   useEffect(() => {
     fetchTasks();
@@ -29,12 +31,14 @@ function App() {
       const res = await fetch('http://localhost:5000/tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description }),
+        body: JSON.stringify({ title, description, priority, dueDate }),
       });
       const newTask = await res.json();
       setTasks([...tasks, newTask]);
       setTitle('');
       setDescription('');
+      setPriority('medium');
+      setDueDate('');
     } catch (err) {
       console.error('Error adding task:', err);
     }
@@ -103,6 +107,10 @@ function App() {
         setTitle={setTitle}
         description={description}
         setDescription={setDescription}
+        priority={priority}
+        setPriority={setPriority}
+        dueDate={dueDate}
+        setDueDate={setDueDate}
         onAddTask={handleAddTask}
       />
 

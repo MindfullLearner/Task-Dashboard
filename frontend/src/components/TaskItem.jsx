@@ -43,10 +43,26 @@ function TaskItem({
   return (
     <li className={`task-item ${task.status === 'completed' ? 'completed' : ''}`}>
       <div className="task-text" onClick={() => onToggleStatus(task)}>
-        <span className="task-title">{task.title}</span>{' '}
-        <span className={`task-status status-${task.status}`}>
-          {task.status}
-        </span>
+        <div className="task-top-row">
+          <span className="task-title">{task.title}</span>
+          <span className={`task-status status-${task.status}`}>
+            {task.status}
+          </span>
+        </div>
+        <div className="task-meta">
+          <span className={`priority-badge priority-${task.priority}`}>
+            {task.priority}
+          </span>
+          {task.dueDate && (
+            <span className="due-date">
+              📅 {new Date(task.dueDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </span>
+          )}
+        </div>
       </div>
       <div className="task-actions">
         <button

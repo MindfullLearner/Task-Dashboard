@@ -1,3 +1,6 @@
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 function TaskForm({
   title,
   setTitle,
@@ -32,10 +35,14 @@ function TaskForm({
           <option value="high">High Priority</option>
         </select>
 
-        <input
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
+        <DatePicker
+          selected={dueDate ? new Date(dueDate) : null}
+          onChange={(date) =>
+            setDueDate(date ? date.toISOString().split('T')[0] : '')
+          }
+          placeholderText="Select due date"
+          dateFormat="MMM d, yyyy"
+          className="date-picker-input"
         />
       </div>
 

@@ -267,3 +267,23 @@ h1 {
 .form-row input[type='date']:focus {
   border-color: #764ba2;
 }
+
+/* Date calendar to set the date on tasks */
+.date-picker-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+  font-family: inherit;
+}
+
+.date-picker-input:focus {
+  border-color: #764ba2;
+}
+
+.react-datepicker-popper {
+  z-index: 20;
+}

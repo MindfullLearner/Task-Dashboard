@@ -63,10 +63,10 @@ function App() {
   };
   
   return (
-    <div>
-      <h1>Task Dashboard</h1>
-
-      <form onSubmit={handleAddTask}>
+    <div className="app-container">
+      <h1>📋 Task Dashboard</h1>
+  
+      <form className="task-form" onSubmit={handleAddTask}>
         <input
           type="text"
           placeholder="Task title"
@@ -76,31 +76,36 @@ function App() {
         />
         <input
           type="text"
-          placeholder="Description"
+          placeholder="Description (optional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <button type="submit">Add Task</button>
+        <button type="submit">+ Add Task</button>
       </form>
-
-      <ul>
-        {tasks.map((task) => (
-          <li key={task._id}>
-            <span
-              onClick={() => handleToggleStatus(task)}
-              style={{
-                cursor: 'pointer',
-                textDecoration: task.status === 'completed' ? 'line-through' : 'none',
-              }}
+  
+      {tasks.length === 0 ? (
+        <p className="empty-state">No tasks yet — add one above 👆</p>
+      ) : (
+        <ul className="task-list">
+          {tasks.map((task) => (
+            <li
+              key={task._id}
+              className={`task-item ${task.status === 'completed' ? 'completed' : ''}`}
             >
-              {task.title} — {task.status}
-            </span>
-            <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
-          </li>
-        ))}
-    </ul>
+              <div className="task-text" onClick={() => handleToggleStatus(task)}>
+                <span className="task-title">{task.title}</span>{' '}
+                <span className={`task-status status-${task.status}`}>
+                  {task.status}
+                </span>
+              </div>
+              <button className="delete-btn" onClick={() => handleDeleteTask(task._id)}>
+                ✕
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
-}
 
 export default App;

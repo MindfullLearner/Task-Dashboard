@@ -43,4 +43,86 @@ function App() {
   const handleDeleteTask = async (id) => {
     try {
       await fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' });
-      setTasks(tasks.filter((task) => task.
+      setTasks(tasks.filter((task) => task._id !== id));
+    } catch (err) {
+      console.error('Error deleting task:', err);
+    }
+  };
+
+  const handleToggleStatus = async (task) => {
+    const newStatus = task.status === 'pending' ? 'completed' : 'pending';
+    try {
+      const res = await fetch(`http://localhost:5000/tasks/${task._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const updatedTask = await res.json();
+      setTasks(tasks.map((t) => (t._id === updatedTask._id ? updatedTask : t)));
+    } catch (err) {
+      console.error('Error updating task:', err);
+    }
+  };
+
+  const startEditing = (task) => {
+    setEditingId(task._id);
+    setEditTitle(task.title);
+    setEditDescription(task.description);
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditTitle('');
+    setEditDescription('');
+  };
+
+  const handleSaveEdit = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: editTitle, description: editDescription }),
+      });
+      const updatedTask = await res.json();
+      setTasks(tasks.map((t) => (t._id === updatedTask._id ? updatedTask : t)));
+      cancelEditing();
+    } catch (err) {
+      console.error('Error editing task:', err);
+    }
+  };
+
+  const filteredTasks =
+    filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
+
+  return (
+    <div className="app-container">
+      <h1>📋 Task Dashboard</h1>
+
+      <TaskForm
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        onAddTask={handleAddTask}
+      />
+
+      <TaskList
+        filteredTasks={filteredTasks}
+        filter={filter}
+        setFilter={setFilter}
+        editingId={editingId}
+        editTitle={editTitle}
+        setEditTitle={setEditTitle}
+        editDescription={editDescription}
+        setEditDescription={setEditDescription}
+        onToggleStatus={handleToggleStatus}
+        onStartEditing={startEditing}
+        onCancelEditing={cancelEditing}
+        onSaveEdit={handleSaveEdit}
+        onDeleteTask={handleDeleteTask}
+      />
+    </div>
+  );
+}
+
+export default App;

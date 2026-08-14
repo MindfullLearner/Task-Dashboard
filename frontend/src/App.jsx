@@ -4,6 +4,9 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
   useEffect(() => {
     fetchTasks();
@@ -61,6 +64,33 @@ function App() {
       console.error('Error updating task:', err);
     }
   };
+  const startEditing = (task) => {
+  setEditingId(task._id);
+  setEditTitle(task.title);
+  setEditDescription(task.description);
+  };
+  
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditTitle('');
+    setEditDescription('');
+  };
+  
+  const handleSaveEdit = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: editTitle, description: editDescription }),
+      });
+      const updatedTask = await res.json();
+  
+      setTasks(tasks.map((t) => (t._id === updatedTask._id ? updatedTask : t)));
+      cancelEditing();
+    } catch (err) {
+      console.error('Error editing task:', err);
+    }
+  };
   
   return (
     <div className="app-container">
@@ -87,22 +117,58 @@ function App() {
         <p className="empty-state">No tasks yet — add one above 👆</p>
       ) : (
         <ul className="task-list">
-          {tasks.map((task) => (
-            <li
-              key={task._id}
-              className={`task-item ${task.status === 'completed' ? 'completed' : ''}`}
-            >
-              <div className="task-text" onClick={() => handleToggleStatus(task)}>
-                <span className="task-title">{task.title}</span>{' '}
-                <span className={`task-status status-${task.status}`}>
-                  {task.status}
-                </span>
-              </div>
-              <button className="delete-btn" onClick={() => handleDeleteTask(task._id)}>
-                ✕
-              </button>
-            </li>
-          ))}
+          {tasks.map((task) =>
+            editingId === task._id ? (
+              <li key={task._id} className="task-item editing">
+                <div className="edit-fields">
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    value={editDescription}
+                    onChange={(e) => setEditDescription(e.target.value)}
+                  />
+                  <div className="edit-actions">
+                    <button className="save-btn" onClick={() => handleSaveEdit(task._id)}>
+                      Save
+                    </button>
+                    <button className="cancel-btn" onClick={cancelEditing}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ) : (
+              <li
+                key={task._id}
+                className={`task-item ${task.status === 'completed' ? 'completed' : ''}`}
+              >
+                <div className="task-text" onClick={() => handleToggleStatus(task)}>
+                  <span className="task-title">{task.title}</span>{' '}
+                  <span className={`task-status status-${task.status}`}>
+                    {task.status}
+                  </span>
+                </div>
+                <div className="task-actions">
+                  <button
+                    className="edit-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      startEditing(task);
+                    }}
+                  >
+                    ✎
+                  </button>
+                  <button className="delete-btn" onClick={() => handleDeleteTask(task._id)}>
+                    ✕
+                  </button>
+                </div>
+              </li>
+            )
+          )}
         </ul>
       )}
     </div>

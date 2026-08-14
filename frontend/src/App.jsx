@@ -33,7 +33,16 @@ function App() {
       console.error('Error adding task:', err);
     }
   };
-
+  const handleDeleteTask = async (id) => {
+    try {
+      await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: 'DELETE',
+      });
+      setTasks(tasks.filter((task) => task._id !== id));
+    } catch (err) {
+      console.error('Error deleting task:', err);
+    }
+  };
   return (
     <div>
       <h1>Task Dashboard</h1>
@@ -59,9 +68,10 @@ function App() {
         {tasks.map((task) => (
           <li key={task._id}>
             {task.title} — {task.status}
+            <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
           </li>
         ))}
-      </ul>
+    </ul>
     </div>
   );
 }

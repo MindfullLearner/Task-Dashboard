@@ -1,0 +1,67 @@
+import TaskItem from './TaskItem';
+
+function TaskList({
+  filteredTasks,
+  filter,
+  setFilter,
+  editingId,
+  editTitle,
+  setEditTitle,
+  editDescription,
+  setEditDescription,
+  onToggleStatus,
+  onStartEditing,
+  onCancelEditing,
+  onSaveEdit,
+  onDeleteTask,
+}) {
+  return (
+    <>
+      <div className="filter-bar">
+        <button
+          className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+          onClick={() => setFilter('all')}
+        >
+          All
+        </button>
+        <button
+          className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
+          onClick={() => setFilter('pending')}
+        >
+          Pending
+        </button>
+        <button
+          className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
+          onClick={() => setFilter('completed')}
+        >
+          Completed
+        </button>
+      </div>
+
+      {filteredTasks.length === 0 ? (
+        <p className="empty-state">No tasks yet — add one above 👆</p>
+      ) : (
+        <ul className="task-list">
+          {filteredTasks.map((task) => (
+            <TaskItem
+              key={task._id}
+              task={task}
+              editingId={editingId}
+              editTitle={editTitle}
+              setEditTitle={setEditTitle}
+              editDescription={editDescription}
+              setEditDescription={setEditDescription}
+              onToggleStatus={onToggleStatus}
+              onStartEditing={onStartEditing}
+              onCancelEditing={onCancelEditing}
+              onSaveEdit={onSaveEdit}
+              onDeleteTask={onDeleteTask}
+            />
+          ))}
+        </ul>
+      )}
+    </>
+  );
+}
+
+export default TaskList;

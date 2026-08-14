@@ -4,6 +4,8 @@ function TaskList({
   filteredTasks,
   filter,
   setFilter,
+  sortBy,
+  setSortBy,
   editingId,
   editTitle,
   setEditTitle,
@@ -37,7 +39,14 @@ function TaskList({
           Completed
         </button>
       </div>
-
+      <div className="sort-bar">
+        <label>Sort by:</label>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="none">Default</option>
+          <option value="dueDate">Due Date</option>
+          <option value="priority">Priority</option>
+        </select>
+      </div>
       {filteredTasks.length === 0 ? (
         <p className="empty-state">No tasks yet — add one above 👆</p>
       ) : (

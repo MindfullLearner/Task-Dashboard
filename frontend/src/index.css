@@ -246,3 +246,24 @@ h1 {
   background: #764ba2;
   color: white;
 }
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-row select,
+.form-row input[type='date'] {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.form-row select:focus,
+.form-row input[type='date']:focus {
+  border-color: #764ba2;
+}

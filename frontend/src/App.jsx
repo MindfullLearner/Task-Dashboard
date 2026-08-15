@@ -218,8 +218,8 @@ function App() {
               <h2>Welcome back, {username} 👋</h2>
               <p>Here's what's on your plate today.</p>
             </div>
-            <div className="banner-icon">
-              <FolderOpen size={36} color="#764ba2" />
+            <div className="user-avatar">
+              {username.charAt(0).toUpperCase()}
             </div>
           </div>
 

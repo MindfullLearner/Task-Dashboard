@@ -448,6 +448,71 @@ h1 {
 .toast-error {
   background: #d33;
 }
+/* Login and sign up style */
+.auth-container {
+  text-align: center;
+}
+
+.auth-container h2 {
+  color: #764ba2;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form input {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: #764ba2;
+}
+
+.auth-form button {
+  padding: 12px;
+  background: #764ba2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-form button:hover {
+  background: #5e3a85;
+}
+
+.auth-error {
+  color: #d33;
+  font-size: 13px;
+  margin: -4px 0;
+}
+
+.auth-toggle {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #666;
+}
+
+.auth-toggle span {
+  color: #764ba2;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-toggle span:hover {
+  text-decoration: underline;
+}
 
 @keyframes slideDown {
   from {

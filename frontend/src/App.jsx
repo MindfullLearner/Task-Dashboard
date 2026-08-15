@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Auth from './components/Auth';
 import Sidebar from './components/Sidebar';
-import TaskForm from './components/TaskForm';
-import TaskList from './components/TaskList';
 import ConfirmModal from './components/ConfirmModal';
-import { FolderOpen } from 'lucide-react';
-import StatsChart from './components/StatsChart';
+import DashboardPage from './pages/DashboardPage';
+import TasksPage from './pages/TasksPage';
+import CalendarPage from './pages/CalendarPage';
 
 function App() {
   const [username, setUsername] = useState(localStorage.getItem('username') || null);
@@ -19,15 +19,14 @@ function App() {
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
   const [priority, setPriority] = useState('medium');
+  const [category, setCategory] = useState('other');
   const [dueDate, setDueDate] = useState('');
   const [sortBy, setSortBy] = useState('none');
+  const [searchQuery, setSearchQuery] = useState('');
   const [toast, setToast] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [currentView, setCurrentView] = useState('dashboard');
-  const [category, setCategory] = useState('other');
-  const [searchQuery, setSearchQuery] = useState('');
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -35,14 +34,15 @@ function App() {
   });
 
   useEffect(() => {
-    if (username) {
-      fetchTasks();
-    }
+    if (username) fetchTasks();
   }, [username]);
+
   useEffect(() => {
-  document.body.setAttribute('data-theme', theme);
-  localStorage.setItem('theme', theme);
-}, [theme]);
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
 
   const fetchTasks = () => {
     setIsLoading(true);
@@ -58,9 +58,7 @@ function App() {
       });
   };
 
-  const handleLoginSuccess = (loggedInUsername) => {
-    setUsername(loggedInUsername);
-  };
+  const handleLoginSuccess = (loggedInUsername) => setUsername(loggedInUsername);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -87,6 +85,7 @@ function App() {
       setTitle('');
       setDescription('');
       setPriority('medium');
+      setCategory('other');
       setDueDate('');
       showToast('Task added successfully!');
     } catch (err) {
@@ -162,12 +161,8 @@ function App() {
     );
   });
 
-  
-
   const filteredTasks =
-    filter === 'all'
-      ? searchedTasks
-      : searchedTasks.filter((task) => task.status === filter);
+    filter === 'all' ? searchedTasks : searchedTasks.filter((task) => task.status === filter);
 
   const priorityOrder = { high: 0, medium: 1, low: 2 };
 
@@ -183,7 +178,6 @@ function App() {
     return 0;
   });
 
-  // Stats — derived from real task data
   const totalTasks = tasks.length;
   const pendingCount = tasks.filter((t) => t.status === 'pending').length;
   const completedCount = tasks.filter((t) => t.status === 'completed').length;
@@ -197,110 +191,83 @@ function App() {
   }).length;
 
   if (!username) {
-    return <Auth onLoginSuccess={handleLoginSuccess} />;
+    return (
+      <BrowserRouter>
+        <Auth onLoginSuccess={handleLoginSuccess} />
+      </BrowserRouter>
+    );
   }
-  const toggleTheme = () => {
-  setTheme(theme === 'light' ? 'dark' : 'light');
-  };
 
   return (
-    <div className="dashboard-shell">
-      <Sidebar
-        onLogout={handleLogout}
-        theme={theme}
-        toggleTheme={toggleTheme}
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-      />
+    <BrowserRouter>
+      <div className="dashboard-shell">
+        <Sidebar onLogout={handleLogout} theme={theme} toggleTheme={toggleTheme} />
 
-      <div className="main-content">
-        {toast && (
-          <div className={`toast toast-${toast.type}`}>{toast.message}</div>
-        )}
+        <div className="main-content">
+          {toast && <div className={`toast toast-${toast.type}`}>{toast.message}</div>}
 
-        <ConfirmModal
-          isOpen={taskToDelete !== null}
-          message="Are you sure you want to delete this task?"
-          onConfirm={handleDeleteTask}
-          onCancel={cancelDeleteTask}
-        />
+          <ConfirmModal
+            isOpen={taskToDelete !== null}
+            message="Are you sure you want to delete this task?"
+            onConfirm={handleDeleteTask}
+            onCancel={cancelDeleteTask}
+          />
 
-        {currentView === 'dashboard' && (
-        <>
-          <div className="top-banner">
-            <div>
-              <h2>Welcome back, {username} 👋</h2>
-              <p>Here's what's on your plate today.</p>
-            </div>
-            <div className="user-avatar">
-              {username.charAt(0).toUpperCase()}
-            </div>
-          </div>
-
-          <div className="dashboard-grid">
-            <div className="stats-row">
-              <div className="stat-card">
-                <span className="stat-number">{totalTasks}</span>
-                <span className="stat-label">Total Tasks</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-number">{pendingCount}</span>
-                <span className="stat-label">Pending</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-number">{completedCount}</span>
-                <span className="stat-label">Completed</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-number">{dueThisWeekCount}</span>
-                <span className="stat-label">Due This Week</span>
-              </div>
-            </div>
-
-            <div className="chart-section">
-              <h3>Progress Overview</h3>
-              <StatsChart pendingCount={pendingCount} completedCount={completedCount} />
-            </div>
-          </div>
-        </>
-      )}
-
-      <TaskForm
-        title={title}
-        setTitle={setTitle}
-        description={description}
-        setDescription={setDescription}
-        priority={priority}
-        setPriority={setPriority}
-        category={category}
-        setCategory={setCategory}
-        dueDate={dueDate}
-        setDueDate={setDueDate}
-        onAddTask={handleAddTask}
-      />
-
-      <TaskList
-        filteredTasks={sortedTasks}
-        isLoading={isLoading}
-        filter={filter}
-        setFilter={setFilter}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        editingId={editingId}
-        editTitle={editTitle}
-        setEditTitle={setEditTitle}
-        editDescription={editDescription}
-        setEditDescription={setEditDescription}
-        onToggleStatus={handleToggleStatus}
-        onStartEditing={startEditing}
-        onCancelEditing={cancelEditing}
-        onSaveEdit={handleSaveEdit}
-        onDeleteTask={confirmDeleteTask}
-      />
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route
+              path="/dashboard"
+              element={
+                <DashboardPage
+                  username={username}
+                  totalTasks={totalTasks}
+                  pendingCount={pendingCount}
+                  completedCount={completedCount}
+                  dueThisWeekCount={dueThisWeekCount}
+                />
+              }
+            />
+            <Route
+              path="/tasks"
+              element={
+                <TasksPage
+                  title={title}
+                  setTitle={setTitle}
+                  description={description}
+                  setDescription={setDescription}
+                  priority={priority}
+                  setPriority={setPriority}
+                  category={category}
+                  setCategory={setCategory}
+                  dueDate={dueDate}
+                  setDueDate={setDueDate}
+                  onAddTask={handleAddTask}
+                  filteredTasks={sortedTasks}
+                  isLoading={isLoading}
+                  filter={filter}
+                  setFilter={setFilter}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                  editingId={editingId}
+                  editTitle={editTitle}
+                  setEditTitle={setEditTitle}
+                  editDescription={editDescription}
+                  setEditDescription={setEditDescription}
+                  onToggleStatus={handleToggleStatus}
+                  onStartEditing={startEditing}
+                  onCancelEditing={cancelEditing}
+                  onSaveEdit={handleSaveEdit}
+                  onDeleteTask={confirmDeleteTask}
+                />
+              }
+            />
+            <Route path="/calendar" element={<CalendarPage tasks={tasks} />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 

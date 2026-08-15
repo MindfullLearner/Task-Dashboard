@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import Auth from './components/Auth';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import ConfirmModal from './components/ConfirmModal';
 
 function App() {
+  const [username, setUsername] = useState(localStorage.getItem('username') || null);
+
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -18,15 +21,40 @@ function App() {
   const [toast, setToast] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
+  const getAuthHeaders = () => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  });
+
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (username) {
+      fetchTasks();
+    }
+  }, [username]);
 
   const fetchTasks = () => {
-    fetch('http://localhost:5000/tasks')
+    fetch('http://localhost:5000/tasks', {
+      headers: getAuthHeaders(),
+    })
       .then((res) => res.json())
       .then((data) => setTasks(data))
       .catch((err) => console.error('Error fetching tasks:', err));
+  };
+
+  const handleLoginSuccess = (loggedInUsername) => {
+    setUsername(loggedInUsername);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setUsername(null);
+    setTasks([]);
+  };
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 2500);
   };
 
   const handleAddTask = async (e) => {
@@ -34,7 +62,7 @@ function App() {
     try {
       const res = await fetch('http://localhost:5000/tasks', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ title, description, priority, dueDate }),
       });
       const newTask = await res.json();
@@ -50,16 +78,19 @@ function App() {
   };
 
   const confirmDeleteTask = (id) => {
-  setTaskToDelete(id);
+    setTaskToDelete(id);
   };
-  
+
   const cancelDeleteTask = () => {
     setTaskToDelete(null);
   };
 
   const handleDeleteTask = async () => {
     try {
-      await fetch(`http://localhost:5000/tasks/${taskToDelete}`, { method: 'DELETE' });
+      await fetch(`http://localhost:5000/tasks/${taskToDelete}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(),
+      });
       setTasks(tasks.filter((task) => task._id !== taskToDelete));
       showToast('Task deleted', 'error');
       setTaskToDelete(null);
@@ -67,12 +98,13 @@ function App() {
       console.error('Error deleting task:', err);
     }
   };
+
   const handleToggleStatus = async (task) => {
     const newStatus = task.status === 'pending' ? 'completed' : 'pending';
     try {
       const res = await fetch(`http://localhost:5000/tasks/${task._id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ status: newStatus }),
       });
       const updatedTask = await res.json();
@@ -98,7 +130,7 @@ function App() {
     try {
       const res = await fetch(`http://localhost:5000/tasks/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ title: editTitle, description: editDescription }),
       });
       const updatedTask = await res.json();
@@ -111,10 +143,10 @@ function App() {
   };
 
   const filteredTasks =
-  filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
+    filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
 
   const priorityOrder = { high: 0, medium: 1, low: 2 };
-  
+
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     if (sortBy === 'dueDate') {
       if (!a.dueDate) return 1;
@@ -126,23 +158,37 @@ function App() {
     }
     return 0;
   });
-  const showToast = (message, type = 'success') => {
-  setToast({ message, type });
-  setTimeout(() => setToast(null), 2500);
-  };
+
+  if (!username) {
+    return (
+      <div className="app-container">
+        <Auth onLoginSuccess={handleLoginSuccess} />
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
       {toast && (
         <div className={`toast toast-${toast.type}`}>{toast.message}</div>
       )}
+
       <ConfirmModal
         isOpen={taskToDelete !== null}
         message="Are you sure you want to delete this task?"
         onConfirm={handleDeleteTask}
         onCancel={cancelDeleteTask}
       />
-      <h1>📋 Task Dashboard</h1>
+
+      <div className="header-row">
+        <h1>📋 Task Dashboard</h1>
+        <div className="user-info">
+          <span>Hi, {username}</span>
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </div>
 
       <TaskForm
         title={title}
@@ -157,7 +203,7 @@ function App() {
       />
 
       <TaskList
-        filteredTasks={filteredTasks}
+        filteredTasks={sortedTasks}
         filter={filter}
         setFilter={setFilter}
         sortBy={sortBy}

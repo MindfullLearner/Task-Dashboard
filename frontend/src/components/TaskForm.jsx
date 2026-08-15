@@ -51,6 +51,7 @@ function TaskForm({
           placeholderText="Select due date"
           dateFormat="MMM d, yyyy"
           className="date-picker-input"
+          minDate={new Date()}
         />
       </div>
       <div className="form-row">

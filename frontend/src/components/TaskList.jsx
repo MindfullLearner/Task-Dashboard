@@ -1,11 +1,14 @@
 import TaskItem from './TaskItem';
 import Dropdown from './Dropdown';
+import { Search } from 'lucide-react';
 
 function TaskList({
   filteredTasks,
   isLoading,
   filter,
   setFilter,
+  searchQuery,
+  setSearchQuery,
   sortBy,
   setSortBy,
   editingId,
@@ -21,6 +24,15 @@ function TaskList({
 }) {
   return (
     <>
+      <div className="search-bar">
+        <Search size={16} className="search-icon" />
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
       <div className="filter-bar">
         <button
           className={`filter-btn ${filter === 'all' ? 'active' : ''}`}

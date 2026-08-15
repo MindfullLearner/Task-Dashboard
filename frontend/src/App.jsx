@@ -27,6 +27,7 @@ function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [currentView, setCurrentView] = useState('dashboard');
   const [category, setCategory] = useState('other');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -153,8 +154,20 @@ function App() {
     }
   };
 
+  const searchedTasks = tasks.filter((task) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      task.title.toLowerCase().includes(query) ||
+      task.description.toLowerCase().includes(query)
+    );
+  });
+
+  
+
   const filteredTasks =
-    filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
+    filter === 'all'
+      ? searchedTasks
+      : searchedTasks.filter((task) => task.status === filter);
 
   const priorityOrder = { high: 0, medium: 1, low: 2 };
 
@@ -271,6 +284,8 @@ function App() {
         isLoading={isLoading}
         filter={filter}
         setFilter={setFilter}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
         sortBy={sortBy}
         setSortBy={setSortBy}
         editingId={editingId}

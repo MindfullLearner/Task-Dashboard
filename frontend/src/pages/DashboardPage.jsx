@@ -3,6 +3,7 @@ import StatsChart from '../components/StatsChart';
 function DashboardPage({ username, totalTasks, pendingCount, completedCount, dueThisWeekCount }) {
   return (
     <>
+    <div className="page-container">
       <div className="top-banner">
         <div>
           <h2>Welcome back, {username} 👋</h2>
@@ -36,6 +37,7 @@ function DashboardPage({ username, totalTasks, pendingCount, completedCount, due
           <StatsChart pendingCount={pendingCount} completedCount={completedCount} />
         </div>
       </div>
+    </div>
     </>
   );
 }

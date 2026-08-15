@@ -1,3 +1,5 @@
+import { Pencil, X } from 'lucide-react';
+
 function TaskItem({
   task,
   editingId,
@@ -72,10 +74,10 @@ function TaskItem({
             onStartEditing(task);
           }}
         >
-          ✎
+          <Pencil size={16} />
         </button>
         <button className="delete-btn" onClick={() => onDeleteTask(task._id)}>
-          ✕
+          <X size={18} />
         </button>
       </div>
     </li>

@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import ConfirmModal from './components/ConfirmModal';
+import { FolderOpen } from 'lucide-react';
 
 function App() {
   const [username, setUsername] = useState(localStorage.getItem('username') || null);
@@ -191,7 +192,7 @@ function App() {
             <h2>Welcome back, {username} 👋</h2>
             <p>Here's what's on your plate today.</p>
           </div>
-          <div className="banner-icon">🗂️</div>
+          <div className="banner-icon"><FolderOpen size={36} color="#764ba2" /></div>
         </div>
 
         <div className="stats-row">

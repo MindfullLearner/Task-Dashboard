@@ -1,3 +1,29 @@
+:root {
+  --bg-gradient-start: #667eea;
+  --bg-gradient-end: #764ba2;
+  --card-bg: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #777777;
+  --input-bg: #ffffff;
+  --input-border: #dddddd;
+  --task-bg: #f7f7fb;
+  --stat-bg: #f7f7fb;
+  --banner-bg: linear-gradient(135deg, #f3e9ff, #eef1ff);
+}
+
+[data-theme='dark'] {
+  --bg-gradient-start: #1f1f2e;
+  --bg-gradient-end: #2d1b3d;
+  --card-bg: #23232f;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0a0;
+  --input-bg: #2c2c3a;
+  --input-border: #3d3d4d;
+  --task-bg: #2c2c3a;
+  --stat-bg: #2c2c3a;
+  --banner-bg: linear-gradient(135deg, #2c2438, #262038);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,12 +32,14 @@
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 40px 20px;
+  transition: background 0.3s ease;
 }
+
 
 .app-container {
   background: #ffffff;
@@ -24,7 +52,7 @@ body {
 
 h1 {
   text-align: center;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 24px;
   font-size: 28px;
 }
@@ -38,10 +66,12 @@ h1 {
 
 .task-form input {
   padding: 12px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  background: var(--input-bg);
+  color: var(--text-primary);
   transition: border-color 0.2s ease;
 }
 
@@ -76,7 +106,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f7f7fb;
+  background: var(--task-bg);
   padding: 14px 16px;
   border-radius: 10px;
   border-left: 4px solid #764ba2;
@@ -100,7 +130,7 @@ h1 {
 
 .task-title {
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .task-item.completed .task-title {
@@ -257,12 +287,12 @@ h1 {
   flex: 1;
   min-width: 140px;
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 15px;
   outline: none;
-  background: white;
-  color: #333;
+  background: var(--input-bg);
+  color: var(--text-primary);
   font-family: inherit;
 }
 
@@ -280,11 +310,12 @@ h1 {
 .date-picker-input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 14px;
   outline: none;
-  background: white;
+  background: var(--input-bg);
+  color: var(--text-primary);
   font-family: inherit;
 }
 
@@ -349,13 +380,13 @@ h1 {
 
 .sort-bar select {
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 6px;
   font-size: 14px;
   outline: none;
   cursor: pointer;
-  background: white;
-  color: #333;
+  background: var(--input-bg);
+  color: var(--text-primary);
   font-family: inherit;
 }
 
@@ -375,11 +406,11 @@ h1 {
   justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  background: white;
+  background: var(--input-bg);
   font-size: 14px;
-  color: #333;
+  color: var(--text-primary);
   cursor: pointer;
   font-family: inherit;
 }
@@ -399,8 +430,8 @@ h1 {
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--card-bg);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   list-style: none;
@@ -411,7 +442,7 @@ h1 {
 .dropdown-item {
   padding: 10px 14px;
   font-size: 14px;
-  color: #333;
+  color: var(--text-primary);
   cursor: pointer;
   transition: background 0.15s ease;
 }
@@ -467,10 +498,12 @@ h1 {
 
 .auth-form input {
   padding: 12px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .auth-form input:focus {
@@ -539,7 +572,7 @@ h1 {
 }
 
 .modal-box {
-  background: white;
+  background: var(--card-bg);
   padding: 24px;
   border-radius: 12px;
   width: 90%;
@@ -550,7 +583,7 @@ h1 {
 
 .modal-message {
   font-size: 15px;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
@@ -626,7 +659,7 @@ h1 {
 /* ---------- Dashboard shell layout ---------- */
 .dashboard-shell {
   display: flex;
-  background: #ffffff;
+  background: var(--card-bg);
   width: 100%;
   max-width: 900px;
   min-height: 600px;
@@ -685,6 +718,7 @@ h1 {
   padding: 32px;
   overflow-y: auto;
   max-height: 90vh;
+  color: var(--text-primary);
 }
 
 /* ---------- Top banner ---------- */
@@ -692,7 +726,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #f3e9ff, #eef1ff);
+  background: var(--banner-bg);
   border-radius: 16px;
   padding: 20px 24px;
   margin-bottom: 20px;
@@ -700,13 +734,13 @@ h1 {
 
 .top-banner h2 {
   font-size: 20px;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .top-banner p {
   font-size: 13px;
-  color: #777;
+  color: var(--text-secondary);
 }
 
 .banner-icon {
@@ -722,7 +756,7 @@ h1 {
 }
 
 .stat-card {
-  background: #f7f7fb;
+  background: var(--stat-bg);
   border-radius: 12px;
   padding: 14px;
   text-align: center;
@@ -739,7 +773,7 @@ h1 {
 
 .stat-label {
   font-size: 11px;
-  color: #888;
+  color: var(--text-secondary);
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -750,7 +784,7 @@ h1 {
   width: 100%;
   max-width: 900px;
   min-height: 550px;
-  background: white;
+  background: var(--card-bg);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
@@ -798,13 +832,13 @@ h1 {
 
 .auth-panel h2 {
   font-size: 24px;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .auth-subtitle {
   font-size: 13px;
-  color: #888;
+  color: var(--text-secondary);
   margin-bottom: 24px;
 }
 

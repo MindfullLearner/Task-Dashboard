@@ -22,6 +22,7 @@ function App() {
   const [sortBy, setSortBy] = useState('none');
   const [toast, setToast] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -35,10 +36,17 @@ function App() {
   }, [username]);
 
   const fetchTasks = () => {
+    setIsLoading(true);
     fetch('http://localhost:5000/tasks', { headers: getAuthHeaders() })
       .then((res) => res.json())
-      .then((data) => setTasks(data))
-      .catch((err) => console.error('Error fetching tasks:', err));
+      .then((data) => {
+        setTasks(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching tasks:', err);
+        setIsLoading(false);
+      });
   };
 
   const handleLoginSuccess = (loggedInUsername) => {
@@ -228,6 +236,7 @@ function App() {
 
         <TaskList
           filteredTasks={sortedTasks}
+          isLoading={isLoading}
           filter={filter}
           setFilter={setFilter}
           sortBy={sortBy}

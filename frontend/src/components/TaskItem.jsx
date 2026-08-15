@@ -14,6 +14,14 @@ function TaskItem({
   onDeleteTask,
 }) {
   const isEditing = editingId === task._id;
+  const categoryLabels = {
+    work: '💼 Work',
+    health: '🏥 Health',
+    project: '📁 Project',
+    household: '🏠 Household',
+    selfcare: '🧘 Self Care',
+    other: '📌 Other',
+  };
 
   if (isEditing) {
     return (
@@ -54,6 +62,9 @@ function TaskItem({
         <div className="task-meta">
           <span className={`priority-badge priority-${task.priority}`}>
             {task.priority}
+          </span>
+          <span className="category-badge">
+            {categoryLabels[task.category] || categoryLabels.other}
           </span>
           {task.dueDate && (
             <span className="due-date">

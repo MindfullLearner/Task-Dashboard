@@ -9,6 +9,8 @@ function TaskForm({
   setDescription,
   priority,
   setPriority,
+  category,
+  setCategory,
   dueDate,
   setDueDate,
   onAddTask,
@@ -51,6 +53,22 @@ function TaskForm({
           className="date-picker-input"
         />
       </div>
+      <div className="form-row">
+        <Dropdown
+          value={category}
+          onChange={setCategory}
+          placeholder="Category"
+          options={[
+            { value: 'work', label: '💼 Work' },
+            { value: 'health', label: '🏥 Health' },
+            { value: 'project', label: '📁 Project' },
+            { value: 'household', label: '🏠 Household' },
+            { value: 'selfcare', label: '🧘 Self Care' },
+            { value: 'other', label: '📌 Other' },
+          ]}
+        />
+      </div>
+
 
       <button type="submit">+ Add Task</button>
     </form>

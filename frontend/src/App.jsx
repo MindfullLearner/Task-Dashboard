@@ -26,6 +26,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [currentView, setCurrentView] = useState('dashboard');
+  const [category, setCategory] = useState('other');
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ function App() {
       const res = await fetch('http://localhost:5000/tasks', {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ title, description, priority, dueDate }),
+        body: JSON.stringify({ title, description, priority, category, dueDate }),
       });
       const newTask = await res.json();
       setTasks([...tasks, newTask]);
@@ -258,6 +259,8 @@ function App() {
         setDescription={setDescription}
         priority={priority}
         setPriority={setPriority}
+        category={category}
+        setCategory={setCategory}
         dueDate={dueDate}
         setDueDate={setDueDate}
         onAddTask={handleAddTask}

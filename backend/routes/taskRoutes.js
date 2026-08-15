@@ -10,6 +10,7 @@ router.post('/', authMiddleware, async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       priority: req.body.priority,
+      category: req.body.category,
       dueDate: req.body.dueDate,
       user: req.user.id,
     });

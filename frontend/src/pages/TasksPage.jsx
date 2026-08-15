@@ -4,6 +4,7 @@ import TaskList from '../components/TaskList';
 function TasksPage(props) {
   return (
     <>
+      <div className="page-container">
       <TaskForm
         title={props.title}
         setTitle={props.setTitle}
@@ -38,7 +39,9 @@ function TasksPage(props) {
         onSaveEdit={props.onSaveEdit}
         onDeleteTask={props.onDeleteTask}
       />
+      </div>
     </>
+      
   );
 }
 

@@ -25,6 +25,7 @@ function App() {
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [currentView, setCurrentView] = useState('dashboard');
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -190,7 +191,13 @@ function App() {
 
   return (
     <div className="dashboard-shell">
-      <Sidebar onLogout={handleLogout} theme={theme} toggleTheme={toggleTheme} />
+      <Sidebar
+        onLogout={handleLogout}
+        theme={theme}
+        toggleTheme={toggleTheme}
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+      />
 
       <div className="main-content">
         {toast && (
@@ -204,67 +211,76 @@ function App() {
           onCancel={cancelDeleteTask}
         />
 
-        <div className="top-banner">
-          <div>
-            <h2>Welcome back, {username} 👋</h2>
-            <p>Here's what's on your plate today.</p>
+        {currentView === 'dashboard' && (
+        <>
+          <div className="top-banner">
+            <div>
+              <h2>Welcome back, {username} 👋</h2>
+              <p>Here's what's on your plate today.</p>
+            </div>
+            <div className="banner-icon">
+              <FolderOpen size={36} color="#764ba2" />
+            </div>
           </div>
-          <div className="banner-icon"><FolderOpen size={36} color="#764ba2" /></div>
-        </div>
 
-        <div className="stats-row">
-          <div className="stat-card">
-            <span className="stat-number">{totalTasks}</span>
-            <span className="stat-label">Total Tasks</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">{pendingCount}</span>
-            <span className="stat-label">Pending</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">{completedCount}</span>
-            <span className="stat-label">Completed</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-number">{dueThisWeekCount}</span>
-            <span className="stat-label">Due This Week</span>
-          </div>
-        </div>
-        <div className="chart-section">
-          <h3>Progress Overview</h3>
-          <StatsChart pendingCount={pendingCount} completedCount={completedCount} />
-        </div>
+          <div className="dashboard-grid">
+            <div className="stats-row">
+              <div className="stat-card">
+                <span className="stat-number">{totalTasks}</span>
+                <span className="stat-label">Total Tasks</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-number">{pendingCount}</span>
+                <span className="stat-label">Pending</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-number">{completedCount}</span>
+                <span className="stat-label">Completed</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-number">{dueThisWeekCount}</span>
+                <span className="stat-label">Due This Week</span>
+              </div>
+            </div>
 
-        <TaskForm
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-          priority={priority}
-          setPriority={setPriority}
-          dueDate={dueDate}
-          setDueDate={setDueDate}
-          onAddTask={handleAddTask}
-        />
+            <div className="chart-section">
+              <h3>Progress Overview</h3>
+              <StatsChart pendingCount={pendingCount} completedCount={completedCount} />
+            </div>
+          </div>
+        </>
+      )}
 
-        <TaskList
-          filteredTasks={sortedTasks}
-          isLoading={isLoading}
-          filter={filter}
-          setFilter={setFilter}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          editingId={editingId}
-          editTitle={editTitle}
-          setEditTitle={setEditTitle}
-          editDescription={editDescription}
-          setEditDescription={setEditDescription}
-          onToggleStatus={handleToggleStatus}
-          onStartEditing={startEditing}
-          onCancelEditing={cancelEditing}
-          onSaveEdit={handleSaveEdit}
-          onDeleteTask={confirmDeleteTask}
-        />
+      <TaskForm
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        priority={priority}
+        setPriority={setPriority}
+        dueDate={dueDate}
+        setDueDate={setDueDate}
+        onAddTask={handleAddTask}
+      />
+
+      <TaskList
+        filteredTasks={sortedTasks}
+        isLoading={isLoading}
+        filter={filter}
+        setFilter={setFilter}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        editingId={editingId}
+        editTitle={editTitle}
+        setEditTitle={setEditTitle}
+        editDescription={editDescription}
+        setEditDescription={setEditDescription}
+        onToggleStatus={handleToggleStatus}
+        onStartEditing={startEditing}
+        onCancelEditing={cancelEditing}
+        onSaveEdit={handleSaveEdit}
+        onDeleteTask={confirmDeleteTask}
+      />
       </div>
     </div>
   );

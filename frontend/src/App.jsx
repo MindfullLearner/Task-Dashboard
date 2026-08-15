@@ -14,6 +14,7 @@ function App() {
   const [priority, setPriority] = useState('medium');
   const [dueDate, setDueDate] = useState('');
   const [sortBy, setSortBy] = useState('none');
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     fetchTasks();
@@ -40,6 +41,7 @@ function App() {
       setDescription('');
       setPriority('medium');
       setDueDate('');
+      showToast('Task added successfully!');
     } catch (err) {
       console.error('Error adding task:', err);
     }
@@ -49,6 +51,7 @@ function App() {
     try {
       await fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' });
       setTasks(tasks.filter((task) => task._id !== id));
+      showToast('Task deleted', 'error');
     } catch (err) {
       console.error('Error deleting task:', err);
     }
@@ -91,6 +94,7 @@ function App() {
       const updatedTask = await res.json();
       setTasks(tasks.map((t) => (t._id === updatedTask._id ? updatedTask : t)));
       cancelEditing();
+      showToast('Task updated!');
     } catch (err) {
       console.error('Error editing task:', err);
     }
@@ -112,9 +116,16 @@ function App() {
     }
     return 0;
   });
+  const showToast = (message, type = 'success') => {
+  setToast({ message, type });
+  setTimeout(() => setToast(null), 2500);
+  };
 
   return (
     <div className="app-container">
+      {toast && (
+        <div className={`toast toast-${toast.type}`}>{toast.message}</div>
+      )}
       <h1>📋 Task Dashboard</h1>
 
       <TaskForm

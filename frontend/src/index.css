@@ -587,3 +587,37 @@ h1 {
 .modal-confirm-btn:hover {
   background: #b02a2a;
 }
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-row h1 {
+  margin-bottom: 0;
+  font-size: 22px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #666;
+}
+
+.logout-btn {
+  padding: 6px 12px;
+  background: #f0f0f5;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #e2e2ea;
+}

@@ -659,12 +659,12 @@ h1 {
 .dashboard-shell {
   display: flex;
   background: var(--card-bg);
-  width: 100%;
-  max-width: 1100px;
+  width: min(1100px, 92vw);
   min-height: 600px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 }
 .dashboard-grid {
   display: grid;
@@ -730,6 +730,7 @@ h1 {
 
 .main-content {
   flex: 1;
+  flex-shrink: 0;
   width: 100%;
   padding: 32px;
   overflow-y: auto;

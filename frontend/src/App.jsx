@@ -23,6 +23,7 @@ function App() {
   const [toast, setToast] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -34,6 +35,10 @@ function App() {
       fetchTasks();
     }
   }, [username]);
+  useEffect(() => {
+  document.body.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+}, [theme]);
 
   const fetchTasks = () => {
     setIsLoading(true);
@@ -178,10 +183,13 @@ function App() {
   if (!username) {
     return <Auth onLoginSuccess={handleLoginSuccess} />;
   }
+  const toggleTheme = () => {
+  setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   return (
     <div className="dashboard-shell">
-      <Sidebar onLogout={handleLogout} />
+      <Sidebar onLogout={handleLogout} theme={theme} toggleTheme={toggleTheme} />
 
       <div className="main-content">
         {toast && (

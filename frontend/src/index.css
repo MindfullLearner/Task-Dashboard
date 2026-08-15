@@ -429,7 +429,8 @@ h1 {
 .toast {
   position: fixed;
   top: 24px;
-  right: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 14px 20px;
   border-radius: 10px;
   color: white;
@@ -437,7 +438,7 @@ h1 {
   font-size: 14px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   z-index: 100;
-  animation: slideIn 0.3s ease;
+  animation: slideDown 0.3s ease;
 }
 
 .toast-success {
@@ -448,13 +449,13 @@ h1 {
   background: #d33;
 }
 
-@keyframes slideIn {
+@keyframes slideDown {
   from {
-    transform: translateX(100%);
+    transform: translate(-50%, -20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translate(-50%, 0);
     opacity: 1;
   }
 }

@@ -1,26 +1,34 @@
-import { LayoutDashboard, CheckSquare, LogOut, Sun, Moon } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import { LayoutDashboard, CheckSquare, Calendar, LogOut, Sun, Moon } from 'lucide-react';
 
-function Sidebar({ onLogout, theme, toggleTheme, currentView, setCurrentView }) {
+function Sidebar({ onLogout, theme, toggleTheme }) {
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
         <LayoutDashboard size={22} color="white" />
       </div>
       <nav className="sidebar-nav">
-        <button
-          className={`sidebar-icon ${currentView === 'dashboard' ? 'active' : ''}`}
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) => `sidebar-icon ${isActive ? 'active' : ''}`}
           title="Dashboard"
-          onClick={() => setCurrentView('dashboard')}
         >
           <LayoutDashboard size={20} />
-        </button>
-        <button
-          className={`sidebar-icon ${currentView === 'tasks' ? 'active' : ''}`}
+        </NavLink>
+        <NavLink
+          to="/tasks"
+          className={({ isActive }) => `sidebar-icon ${isActive ? 'active' : ''}`}
           title="Tasks"
-          onClick={() => setCurrentView('tasks')}
         >
           <CheckSquare size={20} />
-        </button>
+        </NavLink>
+        <NavLink
+          to="/calendar"
+          className={({ isActive }) => `sidebar-icon ${isActive ? 'active' : ''}`}
+          title="Calendar"
+        >
+          <Calendar size={20} />
+        </NavLink>
       </nav>
       <div className="sidebar-bottom">
         <button className="sidebar-icon" title="Toggle theme" onClick={toggleTheme}>

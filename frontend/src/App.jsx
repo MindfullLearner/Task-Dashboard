@@ -5,6 +5,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import ConfirmModal from './components/ConfirmModal';
 import { FolderOpen } from 'lucide-react';
+import StatsChart from './components/StatsChart';
 
 function App() {
   const [username, setUsername] = useState(localStorage.getItem('username') || null);
@@ -228,6 +229,10 @@ function App() {
             <span className="stat-number">{dueThisWeekCount}</span>
             <span className="stat-label">Due This Week</span>
           </div>
+        </div>
+        <div className="chart-section">
+          <h3>Progress Overview</h3>
+          <StatsChart pendingCount={pendingCount} completedCount={completedCount} />
         </div>
 
         <TaskForm

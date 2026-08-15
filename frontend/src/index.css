@@ -910,3 +910,50 @@ h1 {
     transform: rotate(360deg);
   }
 }
+/* Chart style to show stats */
+.chart-section {
+  background: var(--stat-bg);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.chart-section h3 {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.chart-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 30px 0;
+}

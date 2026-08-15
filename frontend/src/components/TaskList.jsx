@@ -3,6 +3,7 @@ import Dropdown from './Dropdown';
 
 function TaskList({
   filteredTasks,
+  isLoading,
   filter,
   setFilter,
   sortBy,
@@ -53,7 +54,12 @@ function TaskList({
           ]}
         />
       </div>
-      {filteredTasks.length === 0 ? (
+      {isLoading ? (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading your tasks...</p>
+        </div>
+      ) : filteredTasks.length === 0 ? (
         <p className="empty-state">No tasks yet — add one above 👆</p>
       ) : (
         <ul className="task-list">

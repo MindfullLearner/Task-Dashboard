@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, CheckSquare, Calendar, LogOut, Sun, Moon } from 'lucide-react';
+import { ClipboardList, LayoutDashboard, CheckSquare, Calendar, LogOut, Sun, Moon } from 'lucide-react';
 
 function Sidebar({ onLogout, theme, toggleTheme }) {
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
-        <LayoutDashboard size={22} color="white" />
+        <ClipboardList size={22} color="white" />
       </div>
       <nav className="sidebar-nav">
         <NavLink

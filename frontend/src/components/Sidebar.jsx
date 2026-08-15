@@ -1,16 +1,24 @@
 import { LayoutDashboard, CheckSquare, LogOut, Sun, Moon } from 'lucide-react';
 
-function Sidebar({ onLogout, theme, toggleTheme }) {
+function Sidebar({ onLogout, theme, toggleTheme, currentView, setCurrentView }) {
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
         <LayoutDashboard size={22} color="white" />
       </div>
       <nav className="sidebar-nav">
-        <button className="sidebar-icon active" title="Dashboard">
+        <button
+          className={`sidebar-icon ${currentView === 'dashboard' ? 'active' : ''}`}
+          title="Dashboard"
+          onClick={() => setCurrentView('dashboard')}
+        >
           <LayoutDashboard size={20} />
         </button>
-        <button className="sidebar-icon" title="Tasks">
+        <button
+          className={`sidebar-icon ${currentView === 'tasks' ? 'active' : ''}`}
+          title="Tasks"
+          onClick={() => setCurrentView('tasks')}
+        >
           <CheckSquare size={20} />
         </button>
       </nav>

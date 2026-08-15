@@ -621,3 +621,220 @@ h1 {
 .logout-btn:hover {
   background: #e2e2ea;
 }
+
+/* Improved dashbaord styling */
+/* ---------- Dashboard shell layout ---------- */
+.dashboard-shell {
+  display: flex;
+  background: #ffffff;
+  width: 100%;
+  max-width: 900px;
+  min-height: 600px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar {
+  width: 80px;
+  background: linear-gradient(180deg, #764ba2, #667eea);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+}
+
+.sidebar-logo {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.sidebar-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.sidebar-icon:hover,
+.sidebar-icon.active {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* ---------- Top banner ---------- */
+.top-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f3e9ff, #eef1ff);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.top-banner h2 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.top-banner p {
+  font-size: 13px;
+  color: #777;
+}
+
+.banner-icon {
+  font-size: 40px;
+}
+
+/* ---------- Stats row ---------- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #f7f7fb;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-number {
+  font-size: 22px;
+  font-weight: 700;
+  color: #764ba2;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ---------- Auth split-screen ---------- */
+.auth-shell {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  min-height: 550px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.auth-illustration {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.auth-illustration-content {
+  color: white;
+  text-align: center;
+}
+
+.auth-logo {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.auth-illustration-content h1 {
+  font-size: 26px;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.auth-illustration-content p {
+  font-size: 14px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.auth-panel {
+  flex: 1;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-panel h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.auth-subtitle {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 24px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 700px) {
+  .auth-illustration {
+    display: none;
+  }
+
+  .dashboard-shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+  }
+
+  .sidebar-bottom {
+    margin-top: 0;
+    margin-left: 16px;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

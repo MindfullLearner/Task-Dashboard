@@ -42,35 +42,55 @@ function Auth({ onLoginSuccess }) {
   };
 
   return (
-    <div className="auth-container">
-      <h1>📋 Task Dashboard</h1>
-      <h2>{isLogin ? 'Log In' : 'Sign Up'}</h2>
+    <div className="auth-shell">
+      <div className="auth-illustration">
+        <div className="auth-illustration-content">
+          <span className="auth-logo">📋</span>
+          <h1>Task Dashboard</h1>
+          <p>
+            Organize your work, hit your deadlines, and stay on top of
+            everything — all in one place.
+          </p>
+        </div>
+      </div>
 
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p className="auth-error">{error}</p>}
-        <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
-      </form>
+      <div className="auth-panel">
+        <h2>{isLogin ? 'Welcome back' : 'Create your account'}</h2>
+        <p className="auth-subtitle">
+          {isLogin ? 'Log in to continue' : 'Sign up to get started'}
+        </p>
 
-      <p className="auth-toggle">
-        {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-        <span onClick={() => { setIsLogin(!isLogin); setError(''); }}>
-          {isLogin ? 'Sign Up' : 'Log In'}
-        </span>
-      </p>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {error && <p className="auth-error">{error}</p>}
+          <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
+        </form>
+
+        <p className="auth-toggle">
+          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+          <span
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setError('');
+            }}
+          >
+            {isLogin ? 'Sign Up' : 'Log In'}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

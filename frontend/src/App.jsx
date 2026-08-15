@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Auth from './components/Auth';
+import Sidebar from './components/Sidebar';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import ConfirmModal from './components/ConfirmModal';
@@ -33,9 +34,7 @@ function App() {
   }, [username]);
 
   const fetchTasks = () => {
-    fetch('http://localhost:5000/tasks', {
-      headers: getAuthHeaders(),
-    })
+    fetch('http://localhost:5000/tasks', { headers: getAuthHeaders() })
       .then((res) => res.json())
       .then((data) => setTasks(data))
       .catch((err) => console.error('Error fetching tasks:', err));
@@ -77,13 +76,8 @@ function App() {
     }
   };
 
-  const confirmDeleteTask = (id) => {
-    setTaskToDelete(id);
-  };
-
-  const cancelDeleteTask = () => {
-    setTaskToDelete(null);
-  };
+  const confirmDeleteTask = (id) => setTaskToDelete(id);
+  const cancelDeleteTask = () => setTaskToDelete(null);
 
   const handleDeleteTask = async () => {
     try {
@@ -159,66 +153,96 @@ function App() {
     return 0;
   });
 
+  // Stats — derived from real task data
+  const totalTasks = tasks.length;
+  const pendingCount = tasks.filter((t) => t.status === 'pending').length;
+  const completedCount = tasks.filter((t) => t.status === 'completed').length;
+  const dueThisWeekCount = tasks.filter((t) => {
+    if (!t.dueDate || t.status === 'completed') return false;
+    const due = new Date(t.dueDate);
+    const now = new Date();
+    const weekFromNow = new Date();
+    weekFromNow.setDate(now.getDate() + 7);
+    return due >= now && due <= weekFromNow;
+  }).length;
+
   if (!username) {
-    return (
-      <div className="app-container">
-        <Auth onLoginSuccess={handleLoginSuccess} />
-      </div>
-    );
+    return <Auth onLoginSuccess={handleLoginSuccess} />;
   }
 
   return (
-    <div className="app-container">
-      {toast && (
-        <div className={`toast toast-${toast.type}`}>{toast.message}</div>
-      )}
+    <div className="dashboard-shell">
+      <Sidebar onLogout={handleLogout} />
 
-      <ConfirmModal
-        isOpen={taskToDelete !== null}
-        message="Are you sure you want to delete this task?"
-        onConfirm={handleDeleteTask}
-        onCancel={cancelDeleteTask}
-      />
+      <div className="main-content">
+        {toast && (
+          <div className={`toast toast-${toast.type}`}>{toast.message}</div>
+        )}
 
-      <div className="header-row">
-        <h1>📋 Task Dashboard</h1>
-        <div className="user-info">
-          <span>Hi, {username}</span>
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
+        <ConfirmModal
+          isOpen={taskToDelete !== null}
+          message="Are you sure you want to delete this task?"
+          onConfirm={handleDeleteTask}
+          onCancel={cancelDeleteTask}
+        />
+
+        <div className="top-banner">
+          <div>
+            <h2>Welcome back, {username} 👋</h2>
+            <p>Here's what's on your plate today.</p>
+          </div>
+          <div className="banner-icon">🗂️</div>
         </div>
+
+        <div className="stats-row">
+          <div className="stat-card">
+            <span className="stat-number">{totalTasks}</span>
+            <span className="stat-label">Total Tasks</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-number">{pendingCount}</span>
+            <span className="stat-label">Pending</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-number">{completedCount}</span>
+            <span className="stat-label">Completed</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-number">{dueThisWeekCount}</span>
+            <span className="stat-label">Due This Week</span>
+          </div>
+        </div>
+
+        <TaskForm
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          priority={priority}
+          setPriority={setPriority}
+          dueDate={dueDate}
+          setDueDate={setDueDate}
+          onAddTask={handleAddTask}
+        />
+
+        <TaskList
+          filteredTasks={sortedTasks}
+          filter={filter}
+          setFilter={setFilter}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          editingId={editingId}
+          editTitle={editTitle}
+          setEditTitle={setEditTitle}
+          editDescription={editDescription}
+          setEditDescription={setEditDescription}
+          onToggleStatus={handleToggleStatus}
+          onStartEditing={startEditing}
+          onCancelEditing={cancelEditing}
+          onSaveEdit={handleSaveEdit}
+          onDeleteTask={confirmDeleteTask}
+        />
       </div>
-
-      <TaskForm
-        title={title}
-        setTitle={setTitle}
-        description={description}
-        setDescription={setDescription}
-        priority={priority}
-        setPriority={setPriority}
-        dueDate={dueDate}
-        setDueDate={setDueDate}
-        onAddTask={handleAddTask}
-      />
-
-      <TaskList
-        filteredTasks={sortedTasks}
-        filter={filter}
-        setFilter={setFilter}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        editingId={editingId}
-        editTitle={editTitle}
-        setEditTitle={setEditTitle}
-        editDescription={editDescription}
-        setEditDescription={setEditDescription}
-        onToggleStatus={handleToggleStatus}
-        onStartEditing={startEditing}
-        onCancelEditing={cancelEditing}
-        onSaveEdit={handleSaveEdit}
-        onDeleteTask={confirmDeleteTask}
-      />
     </div>
   );
 }

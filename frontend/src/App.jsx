@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import ConfirmModal from './components/ConfirmModal';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -15,6 +16,7 @@ function App() {
   const [dueDate, setDueDate] = useState('');
   const [sortBy, setSortBy] = useState('none');
   const [toast, setToast] = useState(null);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   useEffect(() => {
     fetchTasks();
@@ -47,16 +49,24 @@ function App() {
     }
   };
 
-  const handleDeleteTask = async (id) => {
+  const confirmDeleteTask = (id) => {
+  setTaskToDelete(id);
+  };
+  
+  const cancelDeleteTask = () => {
+    setTaskToDelete(null);
+  };
+
+  const handleDeleteTask = async () => {
     try {
-      await fetch(`http://localhost:5000/tasks/${id}`, { method: 'DELETE' });
-      setTasks(tasks.filter((task) => task._id !== id));
+      await fetch(`http://localhost:5000/tasks/${taskToDelete}`, { method: 'DELETE' });
+      setTasks(tasks.filter((task) => task._id !== taskToDelete));
       showToast('Task deleted', 'error');
+      setTaskToDelete(null);
     } catch (err) {
       console.error('Error deleting task:', err);
     }
   };
-
   const handleToggleStatus = async (task) => {
     const newStatus = task.status === 'pending' ? 'completed' : 'pending';
     try {
@@ -126,6 +136,12 @@ function App() {
       {toast && (
         <div className={`toast toast-${toast.type}`}>{toast.message}</div>
       )}
+      <ConfirmModal
+        isOpen={taskToDelete !== null}
+        message="Are you sure you want to delete this task?"
+        onConfirm={handleDeleteTask}
+        onCancel={cancelDeleteTask}
+      />
       <h1>📋 Task Dashboard</h1>
 
       <TaskForm
@@ -155,7 +171,7 @@ function App() {
         onStartEditing={startEditing}
         onCancelEditing={cancelEditing}
         onSaveEdit={handleSaveEdit}
-        onDeleteTask={handleDeleteTask}
+        onDeleteTask={confirmDeleteTask}
       />
     </div>
   );

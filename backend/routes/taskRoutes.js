@@ -6,6 +6,16 @@ const authMiddleware = require('../middleware/authMiddleware');
 // CREATE a new task
 router.post('/', authMiddleware, async (req, res) => {
   try {
+    if (req.body.dueDate) {
+      const dueDate = new Date(req.body.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (dueDate < today) {
+        return res.status(400).json({ message: 'Due date cannot be in the past' });
+      }
+    }
+
     const newTask = new Task({
       title: req.body.title,
       description: req.body.description,
@@ -40,6 +50,16 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
     if (task.user.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Not authorized to edit this task' });
+    }
+
+    if (req.body.dueDate) {
+      const dueDate = new Date(req.body.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (dueDate < today) {
+        return res.status(400).json({ message: 'Due date cannot be in the past' });
+      }
     }
 
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {

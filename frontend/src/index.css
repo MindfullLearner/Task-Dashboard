@@ -258,8 +258,8 @@ h1 {
 .filter-btn {
   flex: 1;
   padding: 8px;
-  background: #f0f0f5;
-  color: #555;
+  background: var(--stat-bg);
+  color: var(--text-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -267,7 +267,6 @@ h1 {
   font-weight: 600;
   transition: background 0.2s ease, color 0.2s ease;
 }
-
 .filter-btn:hover {
   background: #e2e2ea;
 }

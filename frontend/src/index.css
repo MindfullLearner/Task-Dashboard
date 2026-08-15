@@ -730,10 +730,12 @@ h1 {
 
 .main-content {
   flex: 1;
+  width: 100%;
   padding: 32px;
   overflow-y: auto;
   max-height: 90vh;
   color: var(--text-primary);
+  box-sizing: border-box;
 }
 
 /* ---------- Top banner ---------- */
@@ -1035,6 +1037,8 @@ h1 {
   background: var(--stat-bg);
   border-radius: 16px;
   padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .calendar-header {

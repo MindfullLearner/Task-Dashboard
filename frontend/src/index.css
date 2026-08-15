@@ -1173,3 +1173,7 @@ h1 {
 .calendar-task-item .task-status {
   margin-left: auto;
 }
+
+.page-container {
+  width: 100%;
+}

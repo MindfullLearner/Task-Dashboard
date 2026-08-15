@@ -459,3 +459,66 @@ h1 {
     opacity: 1;
   }
 }
+/* Confirm delete style  */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-box {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.modal-message {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-cancel-btn,
+.modal-confirm-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-cancel-btn {
+  background: #eee;
+  color: #555;
+}
+
+.modal-cancel-btn:hover {
+  background: #ddd;
+}
+
+.modal-confirm-btn {
+  background: #d33;
+  color: white;
+}
+
+.modal-confirm-btn:hover {
+  background: #b02a2a;
+}

@@ -1,4 +1,5 @@
 import TaskItem from './TaskItem';
+import Dropdown from './Dropdown';
 
 function TaskList({
   filteredTasks,
@@ -41,11 +42,16 @@ function TaskList({
       </div>
       <div className="sort-bar">
         <label>Sort by:</label>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="none">Default</option>
-          <option value="dueDate">Due Date</option>
-          <option value="priority">Priority</option>
-        </select>
+        <Dropdown
+          value={sortBy}
+          onChange={setSortBy}
+          placeholder="Sort"
+          options={[
+            { value: 'none', label: 'Default' },
+            { value: 'dueDate', label: 'Due Date' },
+            { value: 'priority', label: 'Priority' },
+          ]}
+        />
       </div>
       {filteredTasks.length === 0 ? (
         <p className="empty-state">No tasks yet — add one above 👆</p>

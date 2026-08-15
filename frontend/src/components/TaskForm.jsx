@@ -30,11 +30,16 @@ function TaskForm({
       />
 
       <div className="form-row">
-        <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-          <option value="low">Low Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="high">High Priority</option>
-        </select>
+        <Dropdown
+          value={priority}
+          onChange={setPriority}
+          placeholder="Priority"
+          options={[
+            { value: 'low', label: 'Low Priority' },
+            { value: 'medium', label: 'Medium Priority' },
+            { value: 'high', label: 'High Priority' },
+          ]}
+        />
 
         <DatePicker
           selected={dueDate ? new Date(dueDate) : null}

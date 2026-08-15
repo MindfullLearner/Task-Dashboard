@@ -6,6 +6,7 @@ import ConfirmModal from './components/ConfirmModal';
 import DashboardPage from './pages/DashboardPage';
 import TasksPage from './pages/TasksPage';
 import CalendarPage from './pages/CalendarPage';
+import { API_URL } from './config';
 
 function App() {
   const [username, setUsername] = useState(localStorage.getItem('username') || null);
@@ -46,7 +47,7 @@ function App() {
 
   const fetchTasks = () => {
     setIsLoading(true);
-    fetch('http://localhost:5000/tasks', { headers: getAuthHeaders() })
+    fetch(`${API_URL}/tasks`, { headers: getAuthHeaders() })
       .then((res) => res.json())
       .then((data) => {
         setTasks(data);
@@ -75,7 +76,7 @@ function App() {
   const handleAddTask = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/tasks', {
+      const res = await fetch(`${API_URL}/tasks`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({ title, description, priority, category, dueDate }),
@@ -98,7 +99,7 @@ function App() {
 
   const handleDeleteTask = async () => {
     try {
-      await fetch(`http://localhost:5000/tasks/${taskToDelete}`, {
+      await fetch(`${API_URL}/tasks/${taskToDelete}`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
       });
@@ -113,7 +114,7 @@ function App() {
   const handleToggleStatus = async (task) => {
     const newStatus = task.status === 'pending' ? 'completed' : 'pending';
     try {
-      const res = await fetch(`http://localhost:5000/tasks/${task._id}`, {
+      const res = await fetch(`${API_URL}/tasks/${task._id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ status: newStatus }),
@@ -139,7 +140,7 @@ function App() {
 
   const handleSaveEdit = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+      const res = await fetch(`${API_URL}/tasks/${id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ title: editTitle, description: editDescription }),

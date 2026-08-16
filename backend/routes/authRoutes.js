@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+const isValidEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+};
 // SIGNUP
 router.post('/signup', async (req, res) => {
   try {
@@ -17,10 +21,7 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: 'Please enter a valid email address' });
     }
 
-    const isValidEmail = (email) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    };
+    
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {

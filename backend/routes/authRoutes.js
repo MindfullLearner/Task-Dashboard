@@ -13,6 +13,15 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: 'Name, username, and password are required' });
     }
 
+    if (!isValidEmail(username)) {
+      return res.status(400).json({ message: 'Please enter a valid email address' });
+    }
+
+    const isValidEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: 'Username already taken' });

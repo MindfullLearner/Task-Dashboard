@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { API_URL } from '../config';
 
+
 function Auth({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ function Auth({ onLoginSuccess }) {
      const res = await fetch(`${API_URL}/auth/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ name, username, password }),
       });
 
       const data = await res.json();
@@ -30,10 +33,12 @@ function Auth({ onLoginSuccess }) {
       if (isLogin) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
-        onLoginSuccess(data.username);
+        localStorage.setItem('name', data.name);
+        onLoginSuccess(data.name);
       } else {
         setError('');
         setIsLogin(true);
+        setName('');
         setUsername('');
         setPassword('');
       }
@@ -61,7 +66,16 @@ function Auth({ onLoginSuccess }) {
           {isLogin ? 'Log in to continue' : 'Sign up to get started'}
         </p>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+       <form className="auth-form" onSubmit={handleSubmit}>
+          {!isLogin && (
+            <input
+              type="text"
+              placeholder="Your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          )}
           <input
             type="text"
             placeholder="Username"

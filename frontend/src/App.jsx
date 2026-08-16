@@ -9,8 +9,9 @@ import CalendarPage from './pages/CalendarPage';
 import { API_URL } from './config';
 
 function App() {
+  
   const [username, setUsername] = useState(localStorage.getItem('username') || null);
-
+  const [displayName, setDisplayName] = useState(localStorage.getItem('name') || null);
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -59,12 +60,17 @@ function App() {
       });
   };
 
-  const handleLoginSuccess = (loggedInUsername) => setUsername(loggedInUsername);
+  const handleLoginSuccess = (loggedInName) => {
+  setUsername(localStorage.getItem('username'));
+  setDisplayName(loggedInName);
+};
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('name');
     setUsername(null);
+    setDisplayName(null);
     setTasks([]);
   };
 
@@ -220,7 +226,7 @@ function App() {
               path="/dashboard"
               element={
                 <DashboardPage
-                  username={username}
+                  username={displayName}
                   totalTasks={totalTasks}
                   pendingCount={pendingCount}
                   completedCount={completedCount}

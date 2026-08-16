@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 // SIGNUP
 router.post('/signup', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { name, username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
+    if (!name || !username || !password) {
+      return res.status(400).json({ message: 'Name, username, and password are required' });
     }
 
     const existingUser = await User.findOne({ username });
@@ -21,10 +21,10 @@ router.post('/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
+      name,
       username,
       password: hashedPassword,
     });
-
     await newUser.save();
 
     res.status(201).json({ message: 'User created successfully' });
@@ -59,7 +59,8 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    res.status(200).json({ token, username: user.username });
+    res.status(200).json({ token, username: user.username, name: user.name });
+    
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

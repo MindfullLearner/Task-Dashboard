@@ -6,10 +6,10 @@ function DashboardPage({ username, totalTasks, pendingCount, completedCount, due
     <div className="page-container">
       <div className="top-banner">
         <div>
-          <h2>Welcome back, {username} 👋</h2>
+          <h2>Welcome back, {username || 'there'} 👋</h2>
           <p>Here's what's on your plate today.</p>
         </div>
-        <div className="user-avatar">{username.charAt(0).toUpperCase()}</div>
+        <div className="user-avatar">{username ? username.charAt(0).toUpperCase() : '?'}</div>
       </div>
 
       <div className="dashboard-grid">

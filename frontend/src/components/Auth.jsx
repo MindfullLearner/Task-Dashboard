@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { API_URL } from '../config';
 
 
+const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
 function Auth({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,10 +14,7 @@ function Auth({ onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
